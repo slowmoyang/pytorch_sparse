@@ -11,12 +11,14 @@ tests_require = ['pytest', 'pytest-cov']
 ext_modules = []
 cmdclass = {}
 
+# https://pytorch.org/docs/stable/cpp_extension.html?highlight=cudaextension#torch.utils.cpp_extension.CUDAExtension
 if torch.cuda.is_available():
     ext_modules += [
         CUDAExtension(
             'spspmm_cuda',
             ['cuda/spspmm.cpp', 'cuda/spspmm_kernel.cu'],
-            extra_link_args=['-lcusparse'],
+            extra_link_args=["-l", "cusparse"],
+            # extra_link_args=['-lcusparse'],
         ),
         CUDAExtension('unique_cuda',
                       ['cuda/unique.cpp', 'cuda/unique_kernel.cu'])
